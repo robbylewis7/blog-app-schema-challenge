@@ -21,6 +21,11 @@ var blogPostSchema = mongoose.Schema({
   comments: [commentSchema]
 });
 
+blogPostSchema.pre('find', function(next) {
+  this.populate('author');
+  next();
+});
+
 blogPostSchema.pre('findOne', function(next) {
   this.populate('author');
   next();
@@ -36,7 +41,7 @@ blogPostSchema.methods.serialize = function() {
     author: this.authorName,
     content: this.content,
     title: this.title,
-    created: this.created
+    comments: this.comments
   };
 };
 
